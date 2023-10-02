@@ -1,40 +1,25 @@
-import os
-import time
-import piir
 
 from flask import Flask
 
-remote = piir.Remote(os.path.dirname(os.path.abspath(__file__))+'/sensor.json', 17)
+from SensorManager import SensorManager
+
 app = Flask(__name__)
+manager = SensorManager()
 
 @app.route('/')
 def index():
-    return 'index'
+    return 'idx'
 
-@app.route('/mode/<mode>')
-def mode(mode):
-    if(mode == 'sleep'):
-        waitAndSend('night')
-        waitAndSend('30')
-        return 'ok'
-    
-    if(mode == 'wakeup'):
-        waitAndSend('power')
-        waitAndSend('night')
-        for i in range(0, 30):
-            waitAndSend('add')
+@app.route('/mode/<keyword>')
+def mode(keyword):
+    manager.mode(keyword)
     return 'ok'
 
 @app.route('/sensor/irled/<keyword>')
 def irLed(keyword):
-    remote.send(keyword)
+    manager.irLed(keyword)
     return 'ok'
 
-def waitAndSend(key):
-    term = 0.2
-    time.sleep(term)
-    remote.send(key)
-    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000')
