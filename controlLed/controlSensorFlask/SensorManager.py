@@ -7,7 +7,7 @@ class SensorManager:
         self.remote = piir.Remote(os.path.dirname(os.path.abspath(__file__))+'/sensor.json', 17)
 
     def waitAndSend(self, key):
-        term = 0.2
+        term = 0.3
         time.sleep(term)
         self.send(key)
         return
@@ -25,9 +25,8 @@ class SensorManager:
         if(keyword == 'wakeup'):
             self.waitAndSend('power')
             self.waitAndSend('night')
-            for i in range(0, 30):
+            for i in range(0, 10):
                 self.waitAndSend('add')
-                print(i)
             self.waitAndSend('night')
             return
         return
