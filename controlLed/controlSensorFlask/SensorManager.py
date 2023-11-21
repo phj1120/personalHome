@@ -27,6 +27,8 @@ class SensorManager:
             self.waitAndSend('night')
             for i in range(0, 30):
                 self.waitAndSend('add')
+                print(i)
+            self.waitAndSend('night')
             return
         return
 
